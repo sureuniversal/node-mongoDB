@@ -1,0 +1,16 @@
+{
+  "name": "sure-node-mongodb-driver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "tsc": "tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/mongodb": "^3.3.14",
+    "mongodb": "^3.5.2",
+    "typescript": "^3.7.5"
+  }
+}
