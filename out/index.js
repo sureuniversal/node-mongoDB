@@ -52,9 +52,6 @@ var MongoDbManager = /** @class */ (function () {
                         return [4 /*yield*/, mongodb_1.default.connect(dbServer)];
                     case 1:
                         _a.client = _b.sent();
-                        return [4 /*yield*/, MongoDbManager.initDb()];
-                    case 2:
-                        _b.sent();
                         return [2 /*return*/];
                 }
             });
@@ -160,6 +157,51 @@ var MongoDbManager = /** @class */ (function () {
             });
         });
     };
+    MongoDbManager.createCollectionIfNotExists = function (dbName, collectionName) {
+        return __awaiter(this, void 0, void 0, function () {
+            var db, collections, collectionNames;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        db = MongoDbManager.client.db(dbName);
+                        return [4 /*yield*/, db.collections()];
+                    case 1:
+                        collections = _a.sent();
+                        collectionNames = collections.map(function (e) { return e.collectionName; });
+                        if (!!collectionNames.includes(collectionName)) return [3 /*break*/, 3];
+                        return [4 /*yield*/, db.createCollection(collectionName)];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/, true];
+                    case 3: return [2 /*return*/, false];
+                }
+            });
+        });
+    };
+    MongoDbManager.createIndexForCollection = function (dbName, collectionName, columns, options) {
+        return __awaiter(this, void 0, void 0, function () {
+            var collection, conlumnIndexes;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        collection = MongoDbManager.getCollection(dbName, collectionName);
+                        conlumnIndexes = MongoDbManager.createColumnIndexList(columns);
+                        return [4 /*yield*/, collection.createIndex(conlumnIndexes, options)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    MongoDbManager.createColumnIndexList = function (columns) {
+        var indexObj = {};
+        for (var _i = 0, columns_1 = columns; _i < columns_1.length; _i++) {
+            var column = columns_1[_i];
+            indexObj[column] = 1;
+        }
+        return indexObj;
+    };
     MongoDbManager.getCollection = function (dbName, collectionName) {
         var db = MongoDbManager.client.db(dbName);
         var collection = db.collection(collectionName);
@@ -192,13 +234,6 @@ var MongoDbManager = /** @class */ (function () {
             filters.push(entry);
         }
         return filters;
-    };
-    MongoDbManager.initDb = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/];
-            });
-        });
     };
     return MongoDbManager;
 }());
