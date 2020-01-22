@@ -73,14 +73,14 @@ class MongoDbManager
         return false;
     }
 
-    public static async createIndexForCollection(dbName: string, collectionName: string, columns: [], options?: mongoDb.IndexOptions): Promise<void>
+    public static async createIndexForCollection(dbName: string, collectionName: string, columns: [string], options?: mongoDb.IndexOptions): Promise<void>
     {
         const collection = MongoDbManager.getCollection(dbName, collectionName);
         const conlumnIndexes = MongoDbManager.createColumnIndexList(columns);
         await collection.createIndex(conlumnIndexes, options);
     }
 
-    private static createColumnIndexList(columns: []): {[columnName: string]: number}
+    private static createColumnIndexList(columns: [string]): {[columnName: string]: number}
     {
         let indexObj: {[columnName: string]: number} = {};
         for (const column of columns)
