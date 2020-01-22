@@ -2,7 +2,7 @@
   "name": "sure-node-mongodb-driver",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "out/index.js",
   "scripts": {
     "tsc": "tsc"
   },
