@@ -60,6 +60,25 @@ class MongoDbManager
         return docs;
     }
 
+    public static async createCollectionIfNotExists(dbName: string, collectionName: string): Promise<boolean>
+    {
+        let db = MongoDbManager.client.db(dbName);
+        const collections = await db.collections();
+        const collectionNames = collections.map(e => e.collectionName);
+        if (!collectionNames.includes(collectionName)) {
+            await db.createCollection(collectionName);
+            return true;
+        }
+
+        return false;
+    }
+
+    public static async createIndexForCollection(dbName: string, collectionName: string, columns: {}, options?: mongoDb.IndexOptions): Promise<void>
+    {
+        const collection = MongoDbManager.getCollection(dbName, collectionName);
+        await collection.createIndex(columns, options);
+    }
+
     private static getCollection(dbName: string, collectionName: string): Collection
     {
         const db = MongoDbManager.client.db(dbName);
